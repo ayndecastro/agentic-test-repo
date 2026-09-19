@@ -1,0 +1,48 @@
+name: Bug report
+description: Report a defect or deviation from expected behaviour. Fill every field so an agent can reproduce it before attempting a fix — guessing is the #1 cause of wasted agentic turns here.
+title: "[bug] "
+labels: ["triage", "bug"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Description (symptom)
+      description: What happened vs what should have happened, in one tight paragraph. Quote any error message shown verbatim (code block) — paraphrasing hides the real cause.
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      description: Numbered steps, each a single atomic action; include exact command lines / inputs as code blocks, no "or similar". A reviewer or agent must be able to paste these in order and hit the same behaviour with zero interpretation required.
+    validations:
+      required: true
+  - type: textarea
+    id: expected_actual
+    attributes:
+      label: Expected vs actual (side by side)
+      description: |
+        EXPECTED → paste exact text/output/state you thought would happen
+        ACTUAL   → paste exact text/output/state that happened instead
+      rendering: markdown
+      placeholder: |
+        **EXPECTED**
+        ```text
+        sync complete, 12 files copied
+        (exit code 0)
+        ```
+
+        **ACTUAL**
+        ```text
+        panic: runtime error: index out of range [5] with length 3
+        (exit code 2)
+        ```
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment & versions
+      description: OS, arch, runtime/interpreter version(s), and the exact commit/tag you hit this on (`git rev-parse HEAD`). If relevant to your stack's packaging layer (e.g. package manager lockfile state for Node projects, or venv/poetry resolution pinning details for Python — keep it as terse one-liners, not a pasted dependency dump).
+    validations:
+      required: true
