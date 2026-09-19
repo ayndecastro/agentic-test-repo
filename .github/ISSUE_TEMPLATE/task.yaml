@@ -1,0 +1,41 @@
+name: Feature / Work Task
+description: Start a feature, refactor, or general work item. Fills the mandatory spec fields an agent needs to start + verify without follow-up Q&A.
+title: "[task] "
+labels: ["triage"]
+body:
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: What is changing and why. One paragraph minimum; link the motivating conversation, decision note, or prior issue if any (`#NN`).
+      placeholder: Example — "Add a --dry-run flag to `mycoolcli sync` so users can preview what would be written before it is."
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance_criteria
+    attributes:
+      label: Acceptance criteria (AC)
+      description: One statement per line. Each must be independently verifiable by running something a machine or agent can execute + read — not "looks right". Prefix each with "[ ]" so it doubles as the closing checklist. Prefer naming an existing test file/ID to extend over inventing prose-only criteria where any automated check is feasible for your stack.
+      placeholder: |
+        [ ] mycoolcli sync --dry-run exits 0 and prints a human-readable diff of planned changes without writing anything new (verify via `mycoolcli sync --dry-run --diff` against fixture repo `fixtures/sample/`)
+        [ ] Exit code 2 + stderr message when source dir is missing (add under existing test suite entry point — see README testing section)
+    validations:
+      required: true
+  - type: textarea
+    id: out_of_scope
+    attributes:
+      label: Out of scope
+      description: Explicit non-goals; prevents agents from gold-plating beyond AC. Leave blank only if there is genuinely nothing likely to tempt extra work (rare — list at least the "adjacent but unrelated" improvement you noticed while writing this).
+      placeholder: Example — "Do not change existing --verbose behaviour; do not touch sync's retry/backoff logic."
+    validations:
+      required: true
+  - type: textarea
+    id: verification
+    attributes:
+      label: Verification method (agent-run commands)
+      description: The exact command(s) an agent runs to check each AC. Be specific: include how to reach the right starting state (e.g. checkout a fixture, use a sample env file already present in repo) so no guesswork is required at execution time. List one line per AC it supports when they differ.
+      placeholder: |
+        AC#1 → cd <appdir> && make build && ./mycoolcli sync --dry-run  (assert exit==0, stdout matches expected fixture output — diff manually or extend test to assert)
+        AC#2 → point --source at an empty/misnamed directory, expect nonzero exit + matching stderr line
+    validations:
+      required: true
